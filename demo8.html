@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ipcMain</title>
+</head>
+<body>
+  <div id="content">
+    Demo 8
+  </div>
+</body>
+<script>
+  const { ipcRenderer } = require('electron')
+  // 向主进程发送同步消息 'ping'
+  console.log('向主进程发送并返回收到主进程的同步消息',ipcRenderer.sendSync('synchronous-message', 'ping')) // 返回主进程回复的同步消息 'pong', 并打印输出
+
+  // 监听主进程回复的异步消息
+  ipcRenderer.on('asynchronous-reply', (event, arg) => {
+    console.log('监听主进程回复的异步消息', arg, event)
+  })
+  // 渲染进程向主进程发送异步消息 'ping'
+  console.log('向主进程发送异步消息 ping', ipcRenderer.send('asynchronous-message', 'ping'))
+</script>
+</html>
