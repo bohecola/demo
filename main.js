@@ -1,6 +1,7 @@
 var electron = require('electron')
 
 var app = electron.app
+var globalShortcut = electron.globalShortcut
 var BrowserWindow = electron.BrowserWindow
 
 var mainWindow = null
@@ -15,9 +16,17 @@ app.on('ready', () => {
       enableRemoteModule: true
     }
   })
+
+  globalShortcut.register('ctrl+e', () => {
+    mainWindow.loadURL('https://jspang.com')
+  })
+
+  let isRegister = globalShortcut.isRegistered('ctrl+e') ? 'Register Success' : 'Register fail'
+  console.log('------>' + isRegister)
+
   mainWindow.webContents.openDevTools();
   require('./main/menu.js')
-  mainWindow.loadFile('demo3.html')
+  mainWindow.loadFile('demo7.html')
 
   // BrowserView
   // var BrowserView = electron.BrowserView
@@ -35,4 +44,10 @@ app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+})
+
+app.on('will-quit', function () {
+  // 注销全局快捷键
+  globalShortcut.unregister('ctrl+e')
+  globalShortcut.unregisterAll()
 })
